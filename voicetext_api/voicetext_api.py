@@ -3,14 +3,19 @@ from requests.auth import HTTPBasicAuth
 import pygame
 
 class viocetext:
-    URL = 'https://api.voicetext.jp/v1/tts'
-    data={"text":"","speaker":"hikari","format":"mp3","emotion":"happiness","emotion_level":"2","pitch":"100","speed":"100","volume":"100"}
+    _URL = 'https://api.voicetext.jp/v1/tts'#post request url
+    _dict = {"text":"","speaker":"hikari","format":"mp3","emotion":"happiness","emotion_level":"2","pitch":"100","speed":"100","volume":"100"}#傳送的資料
     def __init__(self,api_key):
-        self.auth = HTTPBasicAuth(api_key, api_key)
+        self._auth = HTTPBasicAuth(api_key, api_key)
     def speak(self,text):
-        print("")
-    def speak(self,text,speaker):
-        print("")
+        self._dict["text"] = text
+        self._get = requests.post(self._URL,data =self._dict ,auth=self._auth)
+        self._tempfile = open("temp.mp3","wb",buffering = 1000000000)
+        self._tempfile.write(self._get.content)
+        self._tempfile.close()
+        pygame.mixer.init()
+        pygame.mixer.music.load("temp.mp3")
+        pygame.mixer.music.play()
     def set_speaker(self,speaker):
         print("")
     def set_emotion(self,emption):
@@ -25,5 +30,8 @@ class viocetext:
         print()
     def save_as_wav(self,text):
         print()
+a = viocetext("zkoiea4yphm49iyn")
+a.speak("おはよう")
+        
 
 
